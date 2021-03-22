@@ -1,0 +1,50 @@
+<div class="col-md-12">
+  <div class="col-md-10">
+    <agm-map [zoom]="zoom" (boundsChange)="onBoundsChange($event)" [fitBounds]="true" [fullscreenControl]="true" [latitude]="latitude" [longitude]="longitude">
+      <agm-marker-cluster imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
+        <agm-marker *ngFor="let data of datas" [latitude]="data.address.latitude"
+          [longitude]="data.address.longitude" [animation]="'BOUNCE'" [iconUrl]="'assets/images/marker-magenta.png'"
+          (click)="openWindow(data)">
+          <agm-snazzy-info-window [isOpen]="isInfoWindowOpen(data.id)" [showCloseButton]="true" [maxWidth]="1000"
+            [maxHeight]="1000" [closeWhenOthersOpen]="true">
+            <strong>
+              <div *ngIf="data.images">
+                    <div class="slideshow-container">
+                      <img *ngFor="let image of data.images; let i=index" 
+                          [src]="image" 
+                          [ngClass]="{'image-active': data.selectedIndex == i}">  
+                  
+                      <div style="text-align: center; display:inline-block"  *ngFor="let dot of data.images; let i=index">
+                          <span class="dot" 
+                              (click)="selectImage(data, i)"
+                              [ngClass]="{'active': data.selectedIndex == i}">
+                          </span>
+                      </div>
+                  </div>
+                </div>
+            </strong>
+          </agm-snazzy-info-window>
+        </agm-marker>
+      </agm-marker-cluster>
+    </agm-map>
+  </div>
+  <div class="col-md-2">
+    <div class="row" style="height: 100vh;overflow-y: scroll;">
+      <div class="col-md-12" *ngFor="let data of datas">
+        <div *ngIf = "check(data)"> 
+          <a href="javascript:;" class="card" (click)="openWindow(data)">
+          <div class="figure" > 
+            <div class="img"  style="background-image: url(assets/images/images.png);"></div>
+             
+          </div>
+          <h2 style="text-align: center;">{{data.name}}</h2>
+          <div style="text-align: center;" class="cardAddress">
+            {{data.address.addressLine1}}, {{data.address.city.name}}<br>{{data.address.state.name}}, {{data.address.pinCode}}, {{data.address.country.name}}
+          </div> 
+          <div class="clearfix"></div>
+        </a>
+      </div>
+    </div>
+    </div> 
+  </div>
+</div> 
